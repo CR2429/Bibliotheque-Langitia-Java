@@ -1,5 +1,8 @@
 import java.awt.*;
+import java.security.cert.TrustAnchor;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.StreamSupport;
 
 public class Main {
     public static void main(String[] args) {
@@ -58,11 +61,59 @@ public class Main {
                 System.out.println("Fermeture de l'application");
                 break;
             case 2:
-                System.out.println("Fermeture de l'application");
+                CreateAccount();
                 break;
             case 3:
                 System.out.println("Fermeture de l'application");
                 break;
         }
+    }
+
+    public static void CreateAccount() {
+        //variable du compte a creer
+        Account account = new Account();
+
+        //scanner
+        Scanner scanner = new Scanner(System.in);
+
+        //enregistrement du compte
+        System.out.println("\n\nCreer un nouveau compte");
+        while (true) {
+            //enregistrement mail
+            System.out.printf("Veuiller entre voter email: ");
+            String email = scanner.nextLine();
+
+            //validation mail
+            if (account.ValidationEmail(email)) {
+                //enregistrer l'email
+                account.setEmail(email);
+
+                //ajouter mot de passe
+                while (true) {
+                    System.out.printf("Veuillez mettre un mot de passe : ");
+                    String password = scanner.nextLine();
+                    System.out.printf("Veuillez reecrire votre mot de passe : ");
+                    String password_copy = scanner.nextLine();
+
+                    if(Objects.equals(password, password_copy)) {
+                        //enregistrement du mot de passe
+                        account.setPassword(password);
+                        break;
+                    } else {
+                        System.out.println("Le mot de passe ne correspont pas veuillez reessayer.");
+                    }
+                }
+
+                //Enregistrer le compte
+                account.Register();
+                System.out.println("Compte enregistrer");
+                break;
+
+            } else {
+                //email non valide
+                System.out.println("L'email est deja utilisé ou n'est pas valide.");
+            }
+        }
+
     }
 }
